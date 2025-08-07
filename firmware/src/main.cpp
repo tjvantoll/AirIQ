@@ -49,12 +49,12 @@ int getSleepDurationMins() {
 }
 
 void setup() {
+#ifndef RELEASE
   // Turn on the Swan’s LED for debugging
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
 
   // Initialize STLINK serial communication with timeout
-#ifndef RELEASE
   serial_debug.begin(SERIAL_BAUD);
   const size_t usb_timeout_ms = 3000;
   for (const size_t start_ms = millis(); !serial_debug && (millis() - start_ms) < usb_timeout_ms;);
