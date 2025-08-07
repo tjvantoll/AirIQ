@@ -1,0 +1,42 @@
+[
+  {
+    "req": "card.voltage",
+    "mode": "lic"
+  },
+  {
+    "req": "hub.set",
+    "product": "com.blues.tvantoll:airqo",
+    "mode": "periodic",
+    "voutbound": "usb:15;high:60;normal:360;low:1440;dead:0",
+    "vinbound": "usb:60;high:720;normal:1440;low:1440;dead:0"
+  },
+  {
+    "req": "card.location.mode",
+    "mode": "periodic",
+    "seconds": 86400
+  },
+  {
+    "req": "card.dfu",
+    "name": "stm32"
+  },
+  {
+    "req": "note.template",
+    "file": "air.qo",
+    "body": {
+      "pm10_standard": 22,
+      "pm25_standard": 22,
+      "pm100_standard": 22,
+      "pm10_env": 22,
+      "pm25_env": 22,
+      "pm100_env": 22,
+      "particles_03um": 22,
+      "particles_05um": 22,
+      "particles_10um": 22,
+      "particles_25um": 22,
+      "particles_50um": 22,
+      "particles_100um": 22,
+      "aqi_pm25_us": 22,
+      "aqi_pm100_us": 22
+    }
+  }
+]
