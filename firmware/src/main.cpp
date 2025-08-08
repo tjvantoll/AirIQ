@@ -2,6 +2,7 @@
 #include "Adafruit_PM25AQI.h"
 #include <Notecard.h>
 #include <Wire.h>
+#include "version.h"
 
 // Project configuration
 #define PRODUCT_UID "com.blues.tvantoll:airiq"
@@ -67,6 +68,12 @@ void setup() {
 #ifndef RELEASE
   notecard.setDebugOutputStream(serial_debug);
 #endif
+
+  J *dfuReq = notecard.newRequest("dfu.status");
+  if (dfuReq != NULL) {
+    JAddStringToObject(dfuReq, "version", firmwareVersion());
+    notecard.sendRequest(dfuReq);
+  }
 
   uint8_t retryCount = 0;
   const uint8_t MAX_RETRIES = 50;
