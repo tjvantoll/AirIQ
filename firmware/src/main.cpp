@@ -5,8 +5,8 @@
 #include "version.h"
 
 // Project configuration
-#define PRODUCT_UID "com.blues.tvantoll:airiq"
 #define AQI_NOTEFILE "air.qo"
+#define READING_INTERVAL_ENV_VAR "reading_interval_min"
 
 // STLINK serial for debug output
 #define SERIAL_BAUD 115200
@@ -25,7 +25,7 @@ PM25_AQI_Data aqiData;
 int getSleepDurationMins() {
   J *envReq = notecard.newRequest("env.get");
   if (envReq != NULL) {
-    JAddStringToObject(envReq, "name", "reading_interval_mins");
+    JAddStringToObject(envReq, "name", READING_INTERVAL_ENV_VAR);
     J *envRsp = notecard.requestAndResponse(envReq);
     if (envRsp != NULL) {
       if (JHasObjectItem(envRsp, "text")) {
