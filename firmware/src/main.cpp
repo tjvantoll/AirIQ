@@ -40,7 +40,6 @@ int getSleepDurationMins() {
               serial_debug.print(intervalMins);
               serial_debug.println(F(" minutes"));
 #endif
-            return intervalMins;
           }
         }
       }
