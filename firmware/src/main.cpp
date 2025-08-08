@@ -36,9 +36,9 @@ int getSleepDurationMins() {
           if (intervalMins > 0) {
             result = intervalMins;
 #ifndef RELEASE
-              serial_debug.print(F("Using reading interval: "));
-              serial_debug.print(intervalMins);
-              serial_debug.println(F(" minutes"));
+            serial_debug.print(F("Using reading interval: "));
+            serial_debug.print(intervalMins);
+            serial_debug.println(F(" minutes"));
 #endif
           }
         }
@@ -166,12 +166,10 @@ void setup() {
         JAddItemToObject(addReq, "body", body);
       }
 
-      J *addRsp = notecard.requestAndResponse(addReq);
-      if (addRsp != NULL) {
+      if (notecard.sendRequest(addReq)) {
 #ifndef RELEASE
         serial_debug.println(F("Data queued successfully"));
 #endif
-        notecard.deleteResponse(addRsp);
       } else {
 #ifndef RELEASE
         serial_debug.println(F("Failed to queue data"));
