@@ -23,6 +23,7 @@ Notecard notecard;
 PM25_AQI_Data aqiData;
 
 int getSleepDurationMins() {
+  int result = DEFAULT_SLEEP_DURATION_MINS;
   J *envReq = notecard.newRequest("env.get");
   if (envReq != NULL) {
     JAddStringToObject(envReq, "name", READING_INTERVAL_ENV_VAR);
@@ -33,12 +34,13 @@ int getSleepDurationMins() {
         if (intervalStr != NULL) {
           unsigned long intervalMins = (unsigned long)atoi(intervalStr);
           if (intervalMins > 0) {
-            return intervalMins;
+            result = intervalMins;
 #ifndef RELEASE
-            serial_debug.print(F("Using reading interval: "));
-            serial_debug.print(intervalMins);
-            serial_debug.println(F(" minutes"));
+              serial_debug.print(F("Using reading interval: "));
+              serial_debug.print(intervalMins);
+              serial_debug.println(F(" minutes"));
 #endif
+            return intervalMins;
           }
         }
       }
@@ -46,7 +48,7 @@ int getSleepDurationMins() {
     }
   }
 
-  return DEFAULT_SLEEP_DURATION_MINS;
+  return result;
 }
 
 void setup() {
