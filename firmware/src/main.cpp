@@ -69,7 +69,7 @@ void setup() {
   notecard.setDebugOutputStream(serial_debug);
 #endif
 
-  configureNotecard();
+  configureNotecard(notecard);
 
   uint8_t retryCount = 0;
   const uint8_t MAX_RETRIES = 50;

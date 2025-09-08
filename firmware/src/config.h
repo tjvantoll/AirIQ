@@ -42,6 +42,6 @@
 extern const char* const AQI_NOTEFILE;
 
 const char *firmwareVersion();
-void configureNotecard();
+void configureNotecard(Notecard &notecard);
 
 #endif

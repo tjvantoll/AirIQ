@@ -8,7 +8,7 @@ const char *firmwareVersion() {
   return &FIRMWARE_VERSION[sizeof(FIRMWARE_VERSION_HEADER)-1];
 }
 
-void configureNotecard() {
+void configureNotecard(Notecard &notecard) {
   J *hubSetReq = notecard.newRequest("hub.set");
   if (hubSetReq != NULL) {
     JAddStringToObject(hubSetReq, "product", "com.blues.tvantoll:airqo");
