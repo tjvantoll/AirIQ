@@ -1,3 +1,8 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#include <Notecard.h>
+
 // C Helpers to convert a number to a string
 #define STRINGIFY(x) STRINGIFY_(x)
 #define STRINGIFY_(x) #x
@@ -34,7 +39,9 @@
   "," QUOTE("builder") ":" QUOTE(PRODUCT_BUILDER)      \
   "}"
 
-// Return the firmware's version, which is both stored within the image and which is verified by DFU
-const char *firmwareVersion() {
-  return &FIRMWARE_VERSION[sizeof(FIRMWARE_VERSION_HEADER)-1];
-}
+extern const char* const AQI_NOTEFILE;
+
+const char *firmwareVersion();
+void configureNotecard();
+
+#endif

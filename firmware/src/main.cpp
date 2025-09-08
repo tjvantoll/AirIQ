@@ -2,10 +2,9 @@
 #include "Adafruit_PM25AQI.h"
 #include <Notecard.h>
 #include <Wire.h>
-#include "version.h"
+#include "config.h"
 
 // Project configuration
-#define AQI_NOTEFILE "air.qo"
 #define READING_INTERVAL_ENV_VAR "reading_interval_min"
 
 // STLINK serial for debug output
@@ -70,11 +69,7 @@ void setup() {
   notecard.setDebugOutputStream(serial_debug);
 #endif
 
-  J *dfuReq = notecard.newRequest("dfu.status");
-  if (dfuReq != NULL) {
-    JAddStringToObject(dfuReq, "version", firmwareVersion());
-    notecard.sendRequest(dfuReq);
-  }
+  configureNotecard();
 
   uint8_t retryCount = 0;
   const uint8_t MAX_RETRIES = 50;
@@ -112,37 +107,6 @@ void setup() {
   delay(30000);
 
   if (aqi.read(&aqiData)) {
-#ifndef RELEASE
-    serial_debug.print(F("PM1.0 Standard: "));
-    serial_debug.println(aqiData.pm10_standard);
-    serial_debug.print(F("PM2.5 Standard: "));
-    serial_debug.println(aqiData.pm25_standard);
-    serial_debug.print(F("PM10.0 Standard: "));
-    serial_debug.println(aqiData.pm100_standard);
-    serial_debug.print(F("PM1.0 Environmental: "));
-    serial_debug.println(aqiData.pm10_env);
-    serial_debug.print(F("PM2.5 Environmental: "));
-    serial_debug.println(aqiData.pm25_env);
-    serial_debug.print(F("PM10.0 Environmental: "));
-    serial_debug.println(aqiData.pm100_env);
-    serial_debug.print(F("AQI PM2.5 US: "));
-    serial_debug.println(aqiData.aqi_pm25_us);
-    serial_debug.print(F("AQI PM10 US: "));
-    serial_debug.println(aqiData.aqi_pm100_us);
-    serial_debug.print(F("Particles >0.3μm: "));
-    serial_debug.println(aqiData.particles_03um);
-    serial_debug.print(F("Particles >0.5μm: "));
-    serial_debug.println(aqiData.particles_05um);
-    serial_debug.print(F("Particles >1.0μm: "));
-    serial_debug.println(aqiData.particles_10um);
-    serial_debug.print(F("Particles >2.5μm: "));
-    serial_debug.println(aqiData.particles_25um);
-    serial_debug.print(F("Particles >5.0μm: "));
-    serial_debug.println(aqiData.particles_50um);
-    serial_debug.print(F("Particles >10.0μm: "));
-    serial_debug.println(aqiData.particles_100um);
-#endif
-
     J *addReq = notecard.newRequest("note.add");
     if (addReq != NULL) {
       JAddStringToObject(addReq, "file", AQI_NOTEFILE);
