@@ -17,6 +17,7 @@
   },
   {
     "req": "card.dfu",
+    "mode": "altdfu",
     "name": "stm32"
   },
   {
