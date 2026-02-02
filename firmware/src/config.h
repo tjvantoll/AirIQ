@@ -9,11 +9,11 @@
 
 // Definitions used by firmware update
 #define PRODUCT_ORG_NAME      "Blues"
-#define PRODUCT_DISPLAY_NAME  "AiqIQ"
+#define PRODUCT_DISPLAY_NAME  "AirIQ"
 #define PRODUCT_FIRMWARE_ID   "airiq"
 #define PRODUCT_DESC          "Air quality monitoring"
-#define PRODUCT_MAJOR         0
-#define PRODUCT_MINOR         1
+#define PRODUCT_MAJOR         1
+#define PRODUCT_MINOR         0
 #define PRODUCT_PATCH         0
 #define PRODUCT_BUILD         0
 #define PRODUCT_BUILT         __DATE__ " " __TIME__

@@ -11,10 +11,7 @@
 #define SERIAL_BAUD 115200
 HardwareSerial serial_debug(PIN_VCP_RX, PIN_VCP_TX);
 
-// Uncomment the following line to disable all logging output
-// #define RELEASE
-
-const unsigned long DEFAULT_SLEEP_DURATION_MINS = 15;
+const unsigned long DEFAULT_SLEEP_DURATION_MINS = 60;
 const unsigned long SENSOR_RETRY_DELAY_MS = 500;
 
 Adafruit_PM25AQI aqi;
@@ -34,11 +31,9 @@ int getSleepDurationMins() {
           unsigned long intervalMins = (unsigned long)atoi(intervalStr);
           if (intervalMins > 0) {
             result = intervalMins;
-#ifndef RELEASE
             serial_debug.print(F("Using reading interval: "));
             serial_debug.print(intervalMins);
             serial_debug.println(F(" minutes"));
-#endif
           }
         }
       }
@@ -50,7 +45,6 @@ int getSleepDurationMins() {
 }
 
 void setup() {
-#ifndef RELEASE
   // Turn on the Swan’s LED for debugging
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
@@ -61,13 +55,9 @@ void setup() {
   for (const size_t start_ms = millis(); !serial_debug && (millis() - start_ms) < usb_timeout_ms;);
   serial_debug.println(F("AirIQ startup"));
   serial_debug.println(F("Initializing Notecard..."));
-#endif
 
   notecard.begin();
-
-#ifndef RELEASE
   notecard.setDebugOutputStream(serial_debug);
-#endif
 
   configureNotecard(notecard);
 
@@ -75,39 +65,30 @@ void setup() {
   const uint8_t MAX_RETRIES = 50;
   bool sensorInitialized = false;
 
-#ifndef RELEASE
   serial_debug.println(F("Initializing AQI sensor..."));
-#endif
 
   while (!sensorInitialized && retryCount < MAX_RETRIES) {
-#ifndef RELEASE
     serial_debug.print(F("AQI sensor init attempt "));
     serial_debug.println(retryCount + 1);
-#endif
 
     aqi = Adafruit_PM25AQI();
     if (aqi.begin_I2C()) {
       sensorInitialized = true;
-#ifndef RELEASE
       serial_debug.println(F("AQI sensor ready"));
-#endif
     } else {
       retryCount++;
-#ifndef RELEASE
       serial_debug.println(F("AQI sensor not ready, retrying..."));
-#endif
       delay(SENSOR_RETRY_DELAY_MS);
     }
   }
 
   // Per datasheet: “Stable data should be got at least 30 seconds
   // after the sensor wakes up from the sleep mode because of the fan’s
-  // performance.
+  // performance.”
   // https://cdn-shop.adafruit.com/product-files/4632/4505_PMSA003I_series_data_manual_English_V2.6.pdf
   delay(30000);
 
   if (aqi.read(&aqiData)) {
-#ifndef RELEASE
     serial_debug.print(F("PM1.0 Standard: "));
     serial_debug.println(aqiData.pm10_standard);
     serial_debug.print(F("PM2.5 Standard: "));
@@ -136,7 +117,6 @@ void setup() {
     serial_debug.println(aqiData.particles_50um);
     serial_debug.print(F("Particles >10.0μm: "));
     serial_debug.println(aqiData.particles_100um);
-#endif
 
     J *addReq = notecard.newRequest("note.add");
     if (addReq != NULL) {
@@ -162,29 +142,22 @@ void setup() {
       }
 
       if (notecard.sendRequest(addReq)) {
-#ifndef RELEASE
         serial_debug.println(F("Data queued successfully"));
-#endif
       } else {
-#ifndef RELEASE
         serial_debug.println(F("Failed to queue data"));
-#endif
       }
     }
   } else {
-#ifndef RELEASE
     serial_debug.println(F("Sensor read failed"));
-#endif
+    serial_debug.println(F("Sensor read failed"));
   }
 }
 
 void loop() {
   int sleepDurationMins = getSleepDurationMins();
-#ifndef RELEASE
   serial_debug.print(F("Entering sleep for "));
   serial_debug.print(sleepDurationMins);
   serial_debug.println(F(" minutes..."));
-#endif
 
   J *req = notecard.newCommand("card.attn");
   if (req != NULL) {

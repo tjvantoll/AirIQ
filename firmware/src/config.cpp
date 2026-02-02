@@ -11,7 +11,7 @@ const char *firmwareVersion() {
 void configureNotecard(Notecard &notecard) {
   J *hubSetReq = notecard.newRequest("hub.set");
   if (hubSetReq != NULL) {
-    JAddStringToObject(hubSetReq, "product", "com.blues.tvantoll:airqo");
+    JAddStringToObject(hubSetReq, "product", "com.blues.tvantoll:airiq");
     JAddStringToObject(hubSetReq, "mode", "periodic");
     JAddStringToObject(hubSetReq, "voutbound", "usb:15;high:60;normal:360;low:1440;dead:0");
     JAddStringToObject(hubSetReq, "vinbound", "usb:60;high:720;normal:1440;low:1440;dead:0");
@@ -20,7 +20,8 @@ void configureNotecard(Notecard &notecard) {
 
   J *cardVoltageReq = notecard.newRequest("card.voltage");
   if (cardVoltageReq != NULL) {
-    JAddStringToObject(cardVoltageReq, "mode", "lic");
+    JAddStringToObject(cardVoltageReq, "mode", "lipo");
+    // JAddStringToObject(cardVoltageReq, "mode", "lic");
     notecard.sendRequest(cardVoltageReq);
   }
 
@@ -33,6 +34,7 @@ void configureNotecard(Notecard &notecard) {
 
   J *cardDfuReq = notecard.newRequest("card.dfu");
   if (cardDfuReq != NULL) {
+    JAddStringToObject(cardDfuReq, "mode", "altdfu");
     JAddStringToObject(cardDfuReq, "name", "stm32");
     notecard.sendRequest(cardDfuReq);
   }
