@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/*
+  AirIQ palette.
+
+  Chrome (surfaces, ink, primary) is derived from logo.png: the mark's gradient
+  runs #2A90CF -> #2C5FA6 on a cream #F9F7F2 field, with a #0A2540 wordmark.
+
+  The chart series slots are NOT the brand blues. An eyeballed logo-derived
+  series ramp failed the lightness-band, chroma-floor and normal-vision
+  separation checks, so the series slots use a palette validated for
+  colorblind separation and contrast against both surfaces below.
+*/
+:root {
+  color-scheme: light;
+
+  --bg: #f9f7f2;
+  --surface: #ffffff;
+  --surface-alt: #f1eee7;
+  --surface-sunken: #f4f2ec;
+  --border: #e2ded4;
+  --border-strong: #cfc9bb;
+  --text: #0a2540;
+  --text-muted: #5a6b7d;
+  --primary: #1f5fa8;
+  --primary-hover: #17497f;
+  --primary-contrast: #ffffff;
+  --secondary: #2a90cf;
+  --accent: #14b8a6;
+  --focus: #2a90cf;
+
+  /* Categorical series slots — validated, do not reorder or cycle. */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+
+  /* US EPA AQI category ramp. `mark` fills bands and dots; `ink` is the
+     accessible text step for that category on this surface. */
+  --aqi-good: #14b8a6;
+  --aqi-good-ink: #0f766e;
+  --aqi-moderate: #e0b341;
+  --aqi-moderate-ink: #8a6206;
+  --aqi-usg: #e8853f;
+  --aqi-usg-ink: #9a4a16;
+  --aqi-unhealthy: #dc5b4b;
+  --aqi-unhealthy-ink: #a32e22;
+  --aqi-very-unhealthy: #9b4fa8;
+  --aqi-very-unhealthy-ink: #6b2f76;
+  --aqi-hazardous: #7e3b4a;
+  --aqi-hazardous-ink: #5e2634;
+
+  --band-alpha: 0.3;
+}
+
+/* Dark steps are selected for the dark surface, not flipped from light. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --bg: #0a1826;
+    --surface: #12233a;
+    --surface-alt: #1a3050;
+    --surface-sunken: #0e1d30;
+    --border: #24405f;
+    --border-strong: #35577a;
+    --text: #edf2f7;
+    --text-muted: #94a9be;
+    --primary: #4fa6e0;
+    --primary-hover: #7cc0ec;
+    --primary-contrast: #06121f;
+    --secondary: #2c5fa6;
+    --accent: #2dd4bf;
+    --focus: #7cc0ec;
+
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+
+    --aqi-good-ink: #2dd4bf;
+    --aqi-moderate-ink: #ebc562;
+    --aqi-usg-ink: #f0a472;
+    --aqi-unhealthy-ink: #f08a7c;
+    --aqi-very-unhealthy-ink: #c48bd0;
+    --aqi-hazardous-ink: #d08a96;
+
+    --band-alpha: 0.32;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0a1826;
+  --surface: #12233a;
+  --surface-alt: #1a3050;
+  --surface-sunken: #0e1d30;
+  --border: #24405f;
+  --border-strong: #35577a;
+  --text: #edf2f7;
+  --text-muted: #94a9be;
+  --primary: #4fa6e0;
+  --primary-hover: #7cc0ec;
+  --primary-contrast: #06121f;
+  --secondary: #2c5fa6;
+  --accent: #2dd4bf;
+  --focus: #7cc0ec;
+
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+  --series-6: #008300;
+
+  --aqi-good-ink: #2dd4bf;
+  --aqi-moderate-ink: #ebc562;
+  --aqi-usg-ink: #f0a472;
+  --aqi-unhealthy-ink: #f08a7c;
+  --aqi-very-unhealthy-ink: #c48bd0;
+  --aqi-hazardous-ink: #d08a96;
+
+  --band-alpha: 0.32;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text);
+  --color-muted: var(--text-muted);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-contrast: var(--primary-contrast);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Tabular figures everywhere a value can change, so digits don't jitter. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+:where(a, button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Recharts paints its own SVG text fills; steer them onto our ink tokens. */
+.recharts-cartesian-axis-tick-value {
+  fill: var(--text-muted);
+  font-size: 12px;
+}
+
+.recharts-cartesian-grid line {
+  stroke: var(--border);
+}
+
+.recharts-curve.recharts-tooltip-cursor {
+  stroke: var(--border-strong);
+}
+
+/* AQI category bands sit behind the line; alpha is theme-dependent.
+   Recharts writes fill-opacity onto the inner path as a presentation
+   attribute, so the rule has to target that path — a CSS declaration wins
+   over a presentation attribute, an inherited value does not. */
+.aqi-band .recharts-reference-area-rect {
+  fill-opacity: var(--band-alpha);
+}
