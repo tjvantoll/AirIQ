@@ -47,3 +47,9 @@ This project’s Notecard configuration lives in the [config.json](config.json) 
 ## Firmware
 
 This project’s host firmware lives in the [firmware](firmware) folder. Learn about this firmware and how to run it in the [Host Firmware]((https://www.youtube.com/watch?v=5fb_mx91nOs)) video.
+
+## Web app
+
+This project’s dashboard lives in the [webapp](webapp) folder. It’s a Next.js app that reads your device’s data from Notehub, charts air quality over time, and lets you change the device’s name and reading interval.
+
+You’ll need a Notehub personal access token to run it—see the [webapp README](webapp/README.md) for setup.

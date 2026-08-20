@@ -1,8 +1,8 @@
 # AirIQ web dashboard
 
 A Next.js dashboard for the AirIQ air quality monitor. It reads `air.qo` and
-`_session.qo` events from [Blues Notehub](https://notehub.io) and lets you view
-and change the device's environment variables.
+`_session.qo` events from [Blues Notehub](https://notehub.io), charts them over
+time, and lets you rename the device and change how often it takes a reading.
 
 ## Setup
 
@@ -99,3 +99,10 @@ inbound sync — within an hour on USB power, up to 24 hours on battery.
 - Chart series colors are validated for colorblind separation and contrast in
   both light and dark mode; they are deliberately not the logo's blues, which
   failed those checks. Brand color is carried by the chrome and the AQI ramp.
+- The AQI scale on the dashboard gives each EPA category equal width rather than
+  plotting 0-500 linearly. This device normally reads well under 50, where a
+  linear axis would pin the marker to the left edge; the boundary values are
+  printed at each segment edge so the non-linearity is visible, not hidden.
+- Per-reading dots are drawn only while a series stays sparse. Each marker
+  carries a surface-colored ring, and at high density those rings paint over the
+  line itself.
